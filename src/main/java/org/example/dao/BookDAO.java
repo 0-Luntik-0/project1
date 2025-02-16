@@ -17,11 +17,13 @@ public class BookDAO {
     }
 
     public List<Book> list() {
-        return jdbcTemplate.query("SELECT * FROM book", new BeanPropertyRowMapper<>(Book.class));
+        String SQL = "SELECT id_book, id_person, name, author, year FROM book";
+        return jdbcTemplate.query(SQL, new BeanPropertyRowMapper<>(Book.class));
     }
 
     public Book bookInfo(int id) {
-        return jdbcTemplate.query("SELECT * FROM book WHERE id_book = ?",
+        String SQL = "SELECT id_book, id_person, name, author, year FROM book WHERE id_book = ?";
+        return jdbcTemplate.query(SQL,
                         new BeanPropertyRowMapper<>(Book.class), id)
                 .stream().findAny().orElse(null);
     }
@@ -39,5 +41,10 @@ public class BookDAO {
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM book WHERE id_book= ?", id);
+    }
+
+    public List<Book> getBooksByPerson(int id_person) {
+        String SQL = "SELECT id_book, id_person, name, author, year FROM book WHERE id_person = ?";
+        return jdbcTemplate.query(SQL, new BeanPropertyRowMapper<>(Book.class), id_person);
     }
 }

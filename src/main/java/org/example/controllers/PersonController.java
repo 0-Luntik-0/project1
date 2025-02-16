@@ -2,7 +2,9 @@ package org.example.controllers;
 
 
 import jakarta.validation.Valid;
+import org.example.dao.BookDAO;
 import org.example.dao.PersonDAO;
+import org.example.models.Book;
 import org.example.models.Person;
 import org.example.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +13,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class PersonController {
 
     private final PersonDAO personDAO;
+    private final BookDAO bookDAO;
     private final PersonValidator personValidator;
 
     @Autowired
-    public PersonController(PersonDAO personDAO, PersonValidator personValidator) {
+    public PersonController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
+        this.bookDAO = bookDAO;
         this.personValidator = personValidator;
     }
 
@@ -37,10 +43,16 @@ public class PersonController {
     }
 
     @GetMapping("/people/{id}")
-    public String person(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.personInfo(id));
+    public String personInfo(@PathVariable("id") int id, Model model) {
+        Person person = personDAO.personInfo(id);
+        List<Book> books = bookDAO.getBooksByPerson(id);
+
+        model.addAttribute("person", person);
+        model.addAttribute("books", books);
+
         return "people/info";
     }
+
 
     @GetMapping("/people/new")
     public String newPerson(@ModelAttribute("person") Person person) {
@@ -84,6 +96,11 @@ public class PersonController {
         personDAO.delete(id);
         return "redirect:/people";
     }
+
+
+
+
+
 
 
 }

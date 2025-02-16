@@ -33,25 +33,25 @@ public class PersonController {
     @GetMapping("/people")
     public String people(Model model) {
         model.addAttribute("people", personDAO.people());
-        return "people";
+        return "people/list";
     }
 
     @GetMapping("/people/{id}")
     public String person(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.personInfo(id));
-        return "personInfo";
+        return "people/info";
     }
 
     @GetMapping("/people/new")
     public String newPerson(@ModelAttribute("person") Person person) {
-        return "newPerson";
+        return "people/new";
     }
 
     @PostMapping("/people")
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
-            return "newPerson";
+            return "people/new";
 
         personDAO.save(person);
 
@@ -62,7 +62,7 @@ public class PersonController {
     public String edit(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.personInfo(id));
         model.addAttribute("id", id); // ✅ Передаём ID в модель
-        return "editPerson";
+        return "people/edit";
     }
 
 
@@ -72,7 +72,7 @@ public class PersonController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("person", person);
             model.addAttribute("id", id);
-            return "editPerson";
+            return "people/edit";
         }
         personDAO.update(id, person);
         return "redirect:/people";

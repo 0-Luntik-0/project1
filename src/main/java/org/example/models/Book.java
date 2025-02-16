@@ -13,7 +13,6 @@ public class Book {
     private String author;
     @NotNull(message = "Введите год")
     @Min(value = 800, message = "Введите корректное значение" )
-    @PastOrPresent(message = "Книга не может быть из будующего")
     private int year; // год выпуска книги
 
     public Book(int idBook, String name, String author, int year) {

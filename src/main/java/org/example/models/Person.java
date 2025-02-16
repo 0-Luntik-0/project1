@@ -1,17 +1,18 @@
 package org.example.models;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public class Person {
-
     private int idPerson;
-    @NotEmpty(message = "Введите фио")
-    @Size(min = 3,max = 100,message = "ФИО должен быть в диапозоне от 3 до 100")
+
+
+    @Pattern(regexp = "^[А-ЯЁA-Z][а-яёa-z]+\\s[А-ЯЁA-Z][а-яёa-z]+(?:\\s[А-ЯЁA-Z][а-яёa-z]+)?$",
+            message = "Введите минимум имя и фамилию, допускается до 3 слов. Только буквы и пробел😊")
     private String fio;
+
+    @NotNull(message = "Введите год рожедения")
     @PastOrPresent(message = "Вы не можете родиться в будующем")
     private LocalDate yearOfBirth;
 

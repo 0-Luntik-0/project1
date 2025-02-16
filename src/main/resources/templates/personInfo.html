@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация об человеке</title>
+</head>
+<body>
+<h1>Личная информация</h1>
+<p th:text="${ 'ID: : '  + person.getIdPerson()}">VALUE</p>
+<p th:text="${ 'ФИО: '  + person.getFio()}">VALUE</p>
+<p th:text="'Дата рождения: ' + ${#temporals.format(person.yearOfBirth, 'dd-MM-yyyy')}">VALUE</p>
+<br/>
+<a href="/">Вернуться в меню</a>
+
+
+</body>
+</html>

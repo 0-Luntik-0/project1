@@ -1,11 +1,21 @@
 package org.example.models;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class Book {
     private int id;
+
+    @NotEmpty(message = "Введите имя")
+    @Size(min = 2, max = 30, message = "Имя должно быть в диапазоне от 2 до 30")
     private String name;
+    @NotEmpty(message = "Введите автора")
+    @Size(min = 2, max = 30, message = "Имя автора должно быть в диапазоне от 2 до 30")
     private String author;
+    @PastOrPresent(message = "Книга не может быть из будующего")
     private LocalDate year; // год выпуска книги
 
     public Book(int id, String name, String author, LocalDate year) {
@@ -19,6 +29,9 @@ public class Book {
         this.name = name;
         this.author = author;
         this.year = year;
+    }
+
+    public Book() {
     }
 
     public int getId() {

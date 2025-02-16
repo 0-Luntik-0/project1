@@ -9,7 +9,8 @@
 <p th:text="${ 'ID: : '  + person.getIdPerson()}">VALUE</p>
 <p th:text="${ 'ФИО: '  + person.getFio()}">VALUE</p>
 <p th:text="'Дата рождения: ' + ${#temporals.format(person.yearOfBirth, 'dd-MM-yyyy')}">VALUE</p>
-<br/>
+<hr/>
+<a th:href="@{/people/{id_person}/edit(id_person=${person.getIdPerson()})}">Редактировать</a>
 <a href="/">Вернуться в меню</a>
 
 

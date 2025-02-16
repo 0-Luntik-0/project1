@@ -40,5 +40,11 @@ public class PersonDAO {
                 .stream().findAny();
     }
 
+    public void update(int id, Person updatePerson) {
+        jdbcTemplate.update("UPDATE person SET fio = ?, year_of_birth = ? WHERE id_person = ?",
+                updatePerson.getFio(), updatePerson.getYearOfBirth(), id);
+
+    }
+
 
 }

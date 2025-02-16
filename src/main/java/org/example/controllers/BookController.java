@@ -6,10 +6,7 @@ import org.example.models.Book;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/books")
@@ -27,6 +24,12 @@ public class BookController {
         return "books/list";
     }
 
+    @GetMapping("/{id}")
+    public String book(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookDAO.bookInfo(id));
+        return "books/info";
+    }
+
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book book) {
         return "books/new";
@@ -41,4 +44,22 @@ public class BookController {
         bookDAO.save(book);
         return "redirect:/books";
     }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookDAO.bookInfo(id));
+        model.addAttribute("id", id);
+        return "books/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@PathVariable("id") int id,
+                         @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "books/edit";
+        }
+        bookDAO.edit(id, book);
+        return "redirect:/books";
+    }
+
 }

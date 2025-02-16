@@ -2,8 +2,12 @@ package org.example.models;
 
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDate;
+
 public class Book {
     private int idBook;
+    private LocalDate localDate;
+
 
     @NotEmpty(message = "Введите имя")
     @Size(min = 2, max = 30, message = "Имя должно быть в диапазоне от 2 до 30")
@@ -13,6 +17,7 @@ public class Book {
     private String author;
     @NotNull(message = "Введите год")
     @Min(value = 800, message = "Введите корректное значение" )
+    @Max(value = 2025,message = "Введите корректное значение" )
     private int year; // год выпуска книги
 
     public Book(int idBook, String name, String author, int year) {

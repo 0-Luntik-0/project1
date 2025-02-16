@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Добавление книги</title>
+    <title>Изменение данные книги</title>
 </head>
 <body>
-<h1>Страница добавления книги</h1>
-<form th:method="POST" th:action="@{/books}" th:object="${book}">
-    <label for="name">Введите название книги: </label>
+<h1>Страница изменения книги</h1>
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getIdBook()})}" th:object="${book}">
+    <label for="name">Дайте новое название книги: </label>
     <input type="text" th:field="*{name}" id="name">
     <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
     <br/>
@@ -15,16 +15,15 @@
     <input type="text" th:field="*{author}" id="author">
     <div style="color: red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">author error</div>
     <br/>
-    <label for="year">Введите год издания книги: </label>
+    <label for="year">Введите год издания: </label>
     <input type="number" th:field="*{year}" id="year">
     <div style="color: red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">year error</div>
     <br/>
 
 
-    <input type="submit" value="Добавить!">
+    <input type="submit" value="Изменить!">
 </form>
 <br/>
 <a href="/">Вернуться в меню</a>
-
 </body>
 </html>

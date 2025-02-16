@@ -61,7 +61,7 @@ public class PersonController {
     @GetMapping("/people/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.personInfo(id));
-        model.addAttribute("id", id); // ✅ Передаём ID в модель
+        model.addAttribute("id", id);
         return "people/edit";
     }
 

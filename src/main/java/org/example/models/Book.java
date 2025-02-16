@@ -1,13 +1,9 @@
 package org.example.models;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
+import jakarta.validation.constraints.*;
 
 public class Book {
-    private int id;
+    private int idBook;
 
     @NotEmpty(message = "Введите имя")
     @Size(min = 2, max = 30, message = "Имя должно быть в диапазоне от 2 до 30")
@@ -15,17 +11,19 @@ public class Book {
     @NotEmpty(message = "Введите автора")
     @Size(min = 2, max = 30, message = "Имя автора должно быть в диапазоне от 2 до 30")
     private String author;
+    @NotNull(message = "Введите год")
+    @Min(value = 800, message = "Введите корректное значение" )
     @PastOrPresent(message = "Книга не может быть из будующего")
-    private LocalDate year; // год выпуска книги
+    private int year; // год выпуска книги
 
-    public Book(int id, String name, String author, LocalDate year) {
-        this.id = id;
+    public Book(int idBook, String name, String author, int year) {
+        this.idBook = idBook;
         this.name = name;
         this.author = author;
         this.year = year;
     }
 
-    public Book(String name, String author, LocalDate year) {
+    public Book(String name, String author, int year) {
         this.name = name;
         this.author = author;
         this.year = year;
@@ -34,12 +32,12 @@ public class Book {
     public Book() {
     }
 
-    public int getId() {
-        return id;
+    public int getIdBook() {
+        return idBook;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdBook(int idBook) {
+        this.idBook = idBook;
     }
 
     public String getName() {
@@ -58,18 +56,18 @@ public class Book {
         this.author = author;
     }
 
-    public LocalDate getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(LocalDate year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id=" + idBook +
                 ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +

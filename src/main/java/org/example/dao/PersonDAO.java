@@ -45,6 +45,9 @@ public class PersonDAO {
                 updatePerson.getFio(), updatePerson.getYearOfBirth(), id);
 
     }
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM person WHERE id_person= ?", id);
+    }
 
 
 }

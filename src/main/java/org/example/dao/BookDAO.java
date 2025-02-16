@@ -19,6 +19,7 @@ public class BookDAO {
     public List<Book> list() {
         return jdbcTemplate.query("SELECT * FROM book", new BeanPropertyRowMapper<>(Book.class));
     }
+
     public Book bookInfo(int id) {
         return jdbcTemplate.query("SELECT * FROM book WHERE id_book = ?",
                         new BeanPropertyRowMapper<>(Book.class), id)
@@ -32,7 +33,11 @@ public class BookDAO {
 
     public void edit(int id, Book book) {
         jdbcTemplate.update("UPDATE book SET name = ?, author = ?, year = ? WHERE id_book = ?",
-                book.getName(), book.getAuthor(), book.getYear(),id);
+                book.getName(), book.getAuthor(), book.getYear(), id);
 
+    }
+
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM book WHERE id_book= ?", id);
     }
 }

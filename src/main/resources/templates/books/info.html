@@ -13,6 +13,10 @@
 <hr/>
 <a th:href="@{/books/{id_book}/edit(id_book=${book.getIdBook()})}">Редактировать</a>
 <a href="/">Вернуться в меню</a>
-
+<br/>
+<br/>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getIdBook()})}">
+    <input type="submit" value="Delete"/>
+</form>
 </body>
 </html>

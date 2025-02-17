@@ -10,10 +10,10 @@ public class Book {
 
 
     @NotEmpty(message = "Введите имя")
-    @Size(min = 2, max = 30, message = "Имя должно быть в диапазоне от 2 до 30")
+    @Size(min = 2, max = 200, message = "Имя должно быть в диапазоне от 2 до 200")
     private String name;
     @NotEmpty(message = "Введите автора")
-    @Size(min = 2, max = 30, message = "Имя автора должно быть в диапазоне от 2 до 30")
+    @Size(min = 2, max = 100, message = "Имя автора должно быть в диапазоне от 2 до 100")
     private String author;
     @NotNull(message = "Введите год")
     @Min(value = 800, message = "Введите корректное значение" )

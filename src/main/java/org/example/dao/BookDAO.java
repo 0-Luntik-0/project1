@@ -21,11 +21,8 @@ public class BookDAO {
         return jdbcTemplate.query(SQL, (rs, rowNum) -> {
             Book book = new Book();
             book.setIdBook(rs.getInt("id_book"));
-
-            // Обрабатываем NULL в id_person правильно
             Integer idPerson = rs.getObject("id_person", Integer.class);
-            book.setIdPerson(idPerson); // Теперь если NULL, останется NULL
-
+            book.setIdPerson(idPerson);
             book.setName(rs.getString("name"));
             book.setAuthor(rs.getString("author"));
             book.setYear(rs.getInt("year"));

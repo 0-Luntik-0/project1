@@ -20,7 +20,7 @@ public class Book {
     @Max(value = 2025,message = "Введите корректное значение" )
     private int year; // год выпуска книги
 
-    public Book(int idBook, String name, String author, int year,int idPerson) {
+    public Book(int idBook, String name, String author, int year,Integer idPerson) {
         this.idBook = idBook;
         this.name = name;
         this.author = author;
@@ -28,17 +28,18 @@ public class Book {
         this.idPerson = idPerson;
     }
 
-    public Book(String name, String author, int year) {
+    public Book(String name, String author, int year,Integer idPerson) {
         this.name = name;
         this.author = author;
         this.year = year;
+        this.idPerson = idPerson;
     }
 
-    public int getIdPerson() {
+    public Integer getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(int idPerson) {
+    public void setIdPerson(Integer idPerson) {
         this.idPerson = idPerson;
     }
 

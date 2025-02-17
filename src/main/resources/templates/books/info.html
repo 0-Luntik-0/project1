@@ -13,8 +13,9 @@
 <!-- Отображаем статус книги -->
 <p th:if="${book.idPerson == null}">Эта книга свободна. Кому назначить ее?</p>
 <p th:if="${book.idPerson != null and book.fio != null}" th:text="'Эта книга сейчас у: ' + ${book.fio}"></p>
-
-<!-- Форма назначения выводится только если книга свободна -->
+<form th:if="${book.idPerson != null}" th:method="PATCH" th:action="@{/books/{id}/remove(id=${book.getIdBook()})}">
+    <input type="submit" value="Освободить книгу"/>
+</form>
 <form th:if="${book.idPerson == null}" th:method="PATCH" th:action="@{/books/{id}/add(id=${book.idBook})}">
     <label for="person">Выберите человека:</label>
     <select name="personId" id="person">

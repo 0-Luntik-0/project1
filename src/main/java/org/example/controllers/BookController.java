@@ -79,5 +79,12 @@ public class BookController {
         return "redirect:/books";
     }
 
+    @PatchMapping("/{id}/remove")
+    public String removeBook(@PathVariable("id") int bookId) {
+        bookDAO.deleteIdPerson(bookId);
+        return "redirect:/books";
+
+    }
+
 
 }

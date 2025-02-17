@@ -34,9 +34,6 @@ public class BookDAO {
     }
 
 
-
-
-
     public Book bookInfo(int id) {
         String SQL = "SELECT b.id_book, b.name, b.author, b.year, p.id_person, p.fio " +
                 " AS fio FROM book b LEFT JOIN person p ON b.id_person = p.id_person WHERE b.id_book = ?";
@@ -56,7 +53,6 @@ public class BookDAO {
     }
 
 
-
     public void edit(int id, Book book) {
         jdbcTemplate.update("UPDATE book SET name = ?, author = ?, year = ? WHERE id_book = ?",
                 book.getName(), book.getAuthor(), book.getYear(), id);
@@ -74,6 +70,11 @@ public class BookDAO {
 
     public void assignToPerson(int bookId, int personId) {
         jdbcTemplate.update("UPDATE book SET id_person = ? WHERE id_book = ?", personId, bookId);
+    }
+
+    public void deleteIdPerson(int bookId) { // освобождаем книгу
+        jdbcTemplate.update("UPDATE book SET id_person = NULL WHERE id_book = ?", bookId);
+
     }
 
 }

@@ -10,6 +10,23 @@
 <p th:text="${ 'Название: '  + book.getName()}">VALUE</p>
 <p th:text="${ 'Автор: '  + book.getAuthor()}">VALUE</p>
 <p th:text="${ 'Год издания: '  + book.getYear() + 'г'}">VALUE</p>
+<!-- Отображаем статус книги -->
+<p th:if="${book.idPerson == null}">Эта книга свободна. Кому назначить ее?</p>
+<p th:if="${book.idPerson != null and book.fio != null}" th:text="'Эта книга сейчас у: ' + ${book.fio}"></p>
+
+<!-- Форма назначения выводится только если книга свободна -->
+<form th:if="${book.idPerson == null}" th:method="PATCH" th:action="@{/books/{id}/add(id=${book.idBook})}">
+    <label for="person">Выберите человека:</label>
+    <select name="personId" id="person">
+        <option th:each="person : ${people}" th:value="${person.idPerson}" th:text="${person.fio}"></option>
+    </select>
+    <input type="submit" value="Назначить"/>
+</form>
+
+
+
+
+
 <hr/>
 <a th:href="@{/books/{id_book}/edit(id_book=${book.getIdBook()})}">Редактировать</a>
 <a href="/">Вернуться в меню</a>

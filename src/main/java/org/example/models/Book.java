@@ -2,11 +2,11 @@ package org.example.models;
 
 import jakarta.validation.constraints.*;
 
-import java.time.LocalDate;
-
 public class Book {
     private int idBook;
-    private LocalDate localDate;
+    private Integer idPerson;
+    private String fio; // Добавляем поле для хранения имени владельца книги
+
 
 
     @NotEmpty(message = "Введите имя")
@@ -20,11 +20,12 @@ public class Book {
     @Max(value = 2025,message = "Введите корректное значение" )
     private int year; // год выпуска книги
 
-    public Book(int idBook, String name, String author, int year) {
+    public Book(int idBook, String name, String author, int year,int idPerson) {
         this.idBook = idBook;
         this.name = name;
         this.author = author;
         this.year = year;
+        this.idPerson = idPerson;
     }
 
     public Book(String name, String author, int year) {
@@ -33,11 +34,27 @@ public class Book {
         this.year = year;
     }
 
+    public int getIdPerson() {
+        return idPerson;
+    }
+
+    public void setIdPerson(int idPerson) {
+        this.idPerson = idPerson;
+    }
+
     public Book() {
     }
 
     public int getIdBook() {
         return idBook;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 
     public void setIdBook(int idBook) {

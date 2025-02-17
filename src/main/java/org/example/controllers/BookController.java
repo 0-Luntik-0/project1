@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import jakarta.validation.Valid;
 import org.example.dao.BookDAO;
+import org.example.dao.PersonDAO;
 import org.example.models.Book;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/books")
 public class BookController {
     private final BookDAO bookDAO;
+    public final PersonDAO personDAO;
 
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
 
@@ -27,8 +30,16 @@ public class BookController {
     @GetMapping("/{id}")
     public String book(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.bookInfo(id));
+        model.addAttribute("people", personDAO.people()); // Передаем список людей
         return "books/info";
     }
+
+    @PatchMapping("/{id}/add")
+    public String assignBook(@PathVariable("id") int bookId, @RequestParam("personId") int personId) {
+        bookDAO.assignToPerson(bookId, personId);
+        return "redirect:/books";
+    }
+
 
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book book) {
@@ -63,9 +74,10 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
 
 }

@@ -4,10 +4,14 @@ package org.example.controllers;
 import jakarta.validation.Valid;
 import org.example.models.Book;
 import org.example.models.Person;
+import org.example.repositories.PersonRepository;
 import org.example.services.BookService;
 import org.example.services.PeopleService;
 import org.example.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,15 +26,17 @@ public class PersonController {
     private final PersonValidator personValidator;
     private final PeopleService peopleService;
     private final BookService bookService;
+    private final PersonRepository personRepository;
 
 
     @Autowired
-    public PersonController(PersonValidator personValidator, PeopleService peopleService, BookService bookService) {
+    public PersonController(PersonValidator personValidator, PeopleService peopleService, BookService bookService, PersonRepository personRepository) {
 
         this.personValidator = personValidator;
         this.peopleService = peopleService;
         this.bookService = bookService;
 
+        this.personRepository = personRepository;
     }
 
     @GetMapping() // Главное меню
@@ -40,11 +46,17 @@ public class PersonController {
         return "mainMenu";
     }
 
-    @GetMapping("/people") // список пользователей
-    public String people(Model model) {
-        model.addAttribute("people", peopleService.findAll());
+    @GetMapping("/people")
+    public String listPeople(@RequestParam(name = "page", defaultValue = "0") int page,
+                             @RequestParam(name = "size", defaultValue = "10") int size,
+                             Model model) {
+        Page<Person> peoplePage = personRepository.findAll(PageRequest.of(page, size, Sort.by("yearOfBirth")));
+        model.addAttribute("people", peoplePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", peoplePage.getTotalPages());
         return "people/list";
     }
+
 
     @GetMapping("/people/{id}") // личная информация со списком книг
     public String personInfo(@PathVariable("id") int id, Model model) {

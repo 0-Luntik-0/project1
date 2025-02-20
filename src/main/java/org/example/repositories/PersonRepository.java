@@ -1,6 +1,9 @@
 package org.example.repositories;
 
 import org.example.models.Person;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,8 +13,11 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     List<Person> findAllBy();
 
-Optional<Person> findByFio(String fio);
+    Page<Person> findAll(Pageable pageable);
 
+    List<Person> findAll(Sort var1);
+
+    Optional<Person> findByFio(String fio);
 
 
 }

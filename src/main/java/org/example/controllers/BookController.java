@@ -1,10 +1,13 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
-
 import org.example.models.Book;
+import org.example.repositories.BookRepository;
 import org.example.services.BookService;
 import org.example.services.PeopleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,19 +18,26 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
 
 
     private final PeopleService peopleService;
-    public BookController(BookService bookInfo, BookService bookService,PeopleService peopleService) {
+    public BookController(BookService bookInfo, BookService bookService, BookRepository bookRepository, PeopleService peopleService) {
         this.bookService = bookService;
+        this.bookRepository = bookRepository;
 
         this.peopleService = peopleService;
     }
 
 
     @GetMapping()
-    public String list(Model model) {
-        model.addAttribute("books", bookService.findAll());
+    public String list(@RequestParam(name = "page",defaultValue = "0") int page,
+                       @RequestParam(name = "size",defaultValue = "10") int size, Model model) {
+        Page<Book> bookPage = bookRepository.findAll(PageRequest.of(page, size, Sort.by("year")));
+
+        model.addAttribute("books", bookPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", bookPage.getTotalPages());
         return "books/list";
     }
 

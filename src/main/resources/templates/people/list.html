@@ -14,6 +14,13 @@
     <a th:href="@{/people/{idPerson}(idPerson=${person.getIdPerson()})}"
        th:text="${person.getFio()}">user</a>
 </div>
+<br/>
+<div>
+    <a th:if="${currentPage > 0}" th:href="@{/people(page=${currentPage - 1}, size=10)}">Предыдущая</a>
+    <span>Страница [[${currentPage + 1}]] из [[${totalPages}]]</span>
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/people(page=${currentPage + 1}, size=10)}">Следующая</a>
+</div>
+
 
 
 </body>

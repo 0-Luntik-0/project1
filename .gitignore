@@ -73,7 +73,7 @@ gradlew.bat
 
 ### 🔹 Spring Boot ###
 # Секретные файлы и настройки
-application.properties
+hibernate.properties
 application.yml
 application-dev.properties
 application-prod.properties

@@ -2,21 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Личная информация о книги</title>
+    <title>Личная информация о книге</title>
 </head>
 <body>
 <h1>Личная информация</h1>
-<p th:text="${ 'ID:'  + book.getIdBook()}">VALUE</p>
-<p th:text="${ 'Название: '  + book.getName()}">VALUE</p>
-<p th:text="${ 'Автор: '  + book.getAuthor()}">VALUE</p>
-<p th:text="${ 'Год издания: '  + book.getYear() + 'г'}">VALUE</p>
+
+<p th:text="'ID: ' + ${book.idBook}">VALUE</p>
+<p th:text="'Название: ' + ${book.name}">VALUE</p>
+<p th:text="'Автор: ' + ${book.author}">VALUE</p>
+<p th:text="'Год издания: ' + ${book.year} + ' г.'">VALUE</p>
+
 <!-- Отображаем статус книги -->
-<p th:if="${book.idPerson == null}">Эта книга свободна. Кому назначить ее?</p>
-<p th:if="${book.idPerson != null and book.fio != null}" th:text="'Эта книга сейчас у: ' + ${book.fio}"></p>
-<form th:if="${book.idPerson != null}" th:method="PATCH" th:action="@{/books/{id}/remove(id=${book.getIdBook()})}">
+<p th:if="${book.person == null}">Эта книга свободна. Кому назначить ее?</p>
+<p th:if="${book.person != null}" th:text="'Эта книга сейчас у: ' + ${book.person.fio}"></p>
+
+<form th:if="${book.person != null}" th:method="PATCH" th:action="@{/books/{id}/remove(id=${book.idBook})}">
     <input type="submit" value="Освободить книгу"/>
 </form>
-<form th:if="${book.idPerson == null}" th:method="PATCH" th:action="@{/books/{id}/add(id=${book.idBook})}">
+
+<form th:if="${book.person == null}" th:method="PATCH" th:action="@{/books/{id}/add(id=${book.idBook})}">
     <label for="person">Выберите человека:</label>
     <select name="personId" id="person">
         <option th:each="person : ${people}" th:value="${person.idPerson}" th:text="${person.fio}"></option>
@@ -24,17 +28,13 @@
     <input type="submit" value="Назначить"/>
 </form>
 
-
-
-
-
 <hr/>
-<a th:href="@{/books/{id_book}/edit(id_book=${book.getIdBook()})}">Редактировать</a>
+<a th:href="@{/books/{id}/edit(id=${book.idBook})}">Редактировать</a>
 <a href="/">Вернуться в меню</a>
-<br/>
-<br/>
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getIdBook()})}">
-    <input type="submit" value="Delete"/>
+<br/><br/>
+
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.idBook})}">
+    <input type="submit" value="Удалить"/>
 </form>
 </body>
 </html>

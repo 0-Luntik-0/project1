@@ -2,10 +2,10 @@ package org.example.controllers;
 
 
 import jakarta.validation.Valid;
-import org.example.dao.BookDAO;
-import org.example.dao.PersonDAO;
 import org.example.models.Book;
 import org.example.models.Person;
+import org.example.services.BookService;
+import org.example.services.PeopleService;
 import org.example.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,15 +18,19 @@ import java.util.List;
 @Controller
 public class PersonController {
 
-    private final PersonDAO personDAO;
-    private final BookDAO bookDAO;
+
     private final PersonValidator personValidator;
+    private final PeopleService peopleService;
+    private final BookService bookService;
+
 
     @Autowired
-    public PersonController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
-        this.personDAO = personDAO;
-        this.bookDAO = bookDAO;
+    public PersonController(PersonValidator personValidator, PeopleService peopleService, BookService bookService) {
+
         this.personValidator = personValidator;
+        this.peopleService = peopleService;
+        this.bookService = bookService;
+
     }
 
     @GetMapping() // Главное меню
@@ -38,14 +42,14 @@ public class PersonController {
 
     @GetMapping("/people") // список пользователей
     public String people(Model model) {
-        model.addAttribute("people", personDAO.people());
+        model.addAttribute("people", peopleService.findAll());
         return "people/list";
     }
 
     @GetMapping("/people/{id}") // личная информация со списком книг
     public String personInfo(@PathVariable("id") int id, Model model) {
-        Person person = personDAO.personInfo(id);
-        List<Book> books = bookDAO.getBooksByPerson(id);
+        Person person = peopleService.findOne(id);
+        List<Book> books = bookService.getBooksByPerson(id);
 
         model.addAttribute("person", person);
         model.addAttribute("books", books);
@@ -65,14 +69,15 @@ public class PersonController {
         if (bindingResult.hasErrors())
             return "people/new";
 
-        personDAO.save(person);
+        peopleService.save(person);
 
         return "redirect:/people";
     }
 
     @GetMapping("/people/{id}/edit") // страница редактирования пользователя
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.personInfo(id));
+        model.addAttribute("person", peopleService.findOne(id));
+
         model.addAttribute("id", id);
         return "people/edit";
     }
@@ -87,20 +92,15 @@ public class PersonController {
             model.addAttribute("id", id);
             return "people/edit";
         }
-        personDAO.update(id, person);
+        peopleService.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("people/{id}") // удаление пользователя
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        peopleService.delete(id);
         return "redirect:/people";
     }
-
-
-
-
-
 
 
 }

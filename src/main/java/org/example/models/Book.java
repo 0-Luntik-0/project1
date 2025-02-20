@@ -1,47 +1,61 @@
 package org.example.models;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+
+@Entity
+@Table(name = "Book")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_book")
     private int idBook;
-    private Integer idPerson;
-    private String fio; // Добавляем поле для хранения имени владельца книги
 
-
-
+    @Column(name = "name")
     @NotEmpty(message = "Введите имя")
     @Size(min = 2, max = 200, message = "Имя должно быть в диапазоне от 2 до 200")
     private String name;
+
+    @Column(name = "author")
     @NotEmpty(message = "Введите автора")
     @Size(min = 2, max = 100, message = "Имя автора должно быть в диапазоне от 2 до 100")
     private String author;
+
+    @Column(name = "year")
     @NotNull(message = "Введите год")
-    @Min(value = 800, message = "Введите корректное значение" )
-    @Max(value = 2025,message = "Введите корректное значение" )
+    @Min(value = 800, message = "Введите корректное значение")
+    @Max(value = 2025, message = "Введите корректное значение")
     private int year; // год выпуска книги
 
-    public Book(int idBook, String name, String author, int year,Integer idPerson) {
+    @ManyToOne
+    @JoinColumn(name = "id_person")
+    private Person person;
+
+
+    public Book(int idBook, String name, String author, int year) {
         this.idBook = idBook;
         this.name = name;
         this.author = author;
         this.year = year;
-        this.idPerson = idPerson;
+
     }
 
-    public Book(String name, String author, int year,Integer idPerson) {
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Book(String name, String author, int year) {
         this.name = name;
         this.author = author;
         this.year = year;
-        this.idPerson = idPerson;
+
     }
 
-    public Integer getIdPerson() {
-        return idPerson;
-    }
-
-    public void setIdPerson(Integer idPerson) {
-        this.idPerson = idPerson;
-    }
 
     public Book() {
     }
@@ -50,13 +64,7 @@ public class Book {
         return idBook;
     }
 
-    public String getFio() {
-        return fio;
-    }
 
-    public void setFio(String fio) {
-        this.fio = fio;
-    }
 
     public void setIdBook(int idBook) {
         this.idBook = idBook;

@@ -1,17 +1,20 @@
 package org.example.util;
 
-import org.example.dao.PersonDAO;
 import org.example.models.Person;
+import org.example.repositories.PersonRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Optional;
+
 @Component
 public class PersonValidator implements Validator {
-    private final PersonDAO personDAO;
 
-    public PersonValidator(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    private final PersonRepository personRepository;
+
+    public PersonValidator(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @Override
@@ -22,8 +25,12 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        if (personDAO.personInfo(person.getFio()).isPresent())
-            errors.rejectValue("fio", "", "Человек с данным ФИО уже существует");
 
+
+        Optional<Person> existingPerson = personRepository.findByFio(person.getFio());
+
+        if (existingPerson.isPresent()) {
+            errors.rejectValue("fio", "", "Человек с данным ФИО уже существует");
+        }
     }
 }

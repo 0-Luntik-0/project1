@@ -1,8 +1,5 @@
 # 📚 Библиотека
-
-## 📝 Описание
-Проект выполнен в рамках курса **Spring - Полный курс. Boot, Hibernate, Security, REST**.  
-Задача – реализовать веб-приложение для цифрового учета книг в библиотеке.
+– реализовать веб-приложение для цифрового учета книг в библиотеке.
 
 ## 🎯 Задача
 В местной библиотеке хотят перейти на цифровой учет книг. Вам необходимо создать веб-приложение, которое позволит библиотекарям:
@@ -45,6 +42,22 @@ cd ВАШ-ПРОЕКТ
 1. Открыть PostgreSQL и создать базу данных:
 ```sql
 CREATE DATABASE library;
+CREATE TABLE person (
+    id_person GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    fio VARCHAR(255) NOT NULL,
+    year_of_birth DATE
+);
+
+CREATE TABLE book (
+    id_book GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_person INTEGER,
+    name VARCHAR(200) NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    year INTEGER,
+    borrow_date TIMESTAMP,
+    CONSTRAINT fk_book_person FOREIGN KEY (id_person) REFERENCES person(id_person) ON DELETE SET NULL
+);
+
 ```
 2. **Переименовать файл конфигурации**  
    В каталоге **`src/main/resources/`** найдите файл:
